@@ -12,7 +12,7 @@ public class VersionAction extends Action {
 
     @Override
     public void run(String[] args) {
-        System.out.println("0.1.0-SNAPSHOT");
+        System.out.println("0.1.0");
     }
 
 }
