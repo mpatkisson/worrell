@@ -20,6 +20,19 @@ public abstract class Action {
      * Performs the application action.
      * @param args Command line arguments.
      */
-    public abstract void run(String[] args);
+    public abstract void run(String[] args) throws Exception;
+
+    /**
+     * Gets the first command line argument.
+     * @param args Command line arguments passed when the app is run.
+     * @return The first argument or null if no argument was supplied.
+     */
+    protected String getFirstCommandArgument(String[] args) {
+        String symbol = null;
+        if (args.length > 1) {
+            symbol = args[1];
+        }
+        return symbol;
+    }
 
 }

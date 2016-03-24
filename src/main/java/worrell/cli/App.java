@@ -3,10 +3,12 @@ package worrell.cli;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import yahoofinance.YahooFinance;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 
 /**
  * Entry point into the CLI
@@ -37,7 +39,7 @@ public class App
     /**
      * Executes the appropriate action.
      */
-    public void run() {
+    public void run() throws Exception {
         String command = getCommand();
         Action action = getAction(command);
         action.run(args);
@@ -75,6 +77,11 @@ public class App
      * @param args Command line arguments
      */
     public static void main(String[] args) {
+        // This line turns logging off for the Yahoo Fiannce API.  There's probably a much better way to do this sort
+        // of thing, but I think it will be taken care of when I refactor the code to use any sort of market data
+        // connector.
+        YahooFinance.logger.setLevel(Level.OFF);
+
         Logger log = LoggerFactory.getLogger(App.class);
         try {
             App app = new App(args);

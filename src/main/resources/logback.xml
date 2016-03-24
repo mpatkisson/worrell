@@ -28,9 +28,6 @@
     <logger name="org.reflections.Reflections" level="INFO" additivity="false">
         <appender-ref ref="file" />
     </logger>
-    <logger name="com.jcabi.aspects.aj.MethodValidator" level="INFO" additivity="false">
-        <appender-ref ref="file" />
-    </logger>
 
     <root level="DEBUG">
         <appender-ref ref="file" />
