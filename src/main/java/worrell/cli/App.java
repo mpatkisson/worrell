@@ -1,25 +1,41 @@
 package worrell.cli;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import yahoofinance.YahooFinance;
+import worrell.services.QuoteService;
+import worrell.services.YahooFinanceQuoteService;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
 
 /**
  * Entry point into the CLI
  */
-public class App
-{
+public class App extends AbstractModule {
     private final String DEFAULT_ACTION = "help";
     private String[] args;
     private Map<String, Action> actions;
+    private static Injector injector;
 
     public static final String EXCEPT_MSG = "Runtime exception logged";
+
+    @Override
+    protected void configure() {
+        bind(QuoteService.class).to(YahooFinanceQuoteService.class);
+    }
+
+    /**
+     * Gets the DI container.
+     * @return A container for injecting dependencies.
+     */
+    public static Injector getInjector() {
+        return injector;
+    }
 
     /**
      * Creates a new instance.
@@ -77,18 +93,15 @@ public class App
      * @param args Command line arguments
      */
     public static void main(String[] args) {
-        // This line turns logging off for the Yahoo Fiannce API.  There's probably a much better way to do this sort
-        // of thing, but I think it will be taken care of when I refactor the code to use any sort of market data
-        // connector.
-        YahooFinance.logger.setLevel(Level.OFF);
-
         Logger log = LoggerFactory.getLogger(App.class);
         try {
             App app = new App(args);
+            injector = Guice.createInjector(app);
             app.run();
         } catch (Exception e) {
             log.debug(e.getMessage(), e);
             log.info(EXCEPT_MSG);
         } 
     }
+
 }

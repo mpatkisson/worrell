@@ -1,9 +1,7 @@
 package worrell.cli;
 
 import com.google.common.base.Strings;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
-import yahoofinance.quotes.stock.StockQuote;
+import worrell.services.QuoteService;
 
 import java.io.IOException;
 
@@ -26,12 +24,12 @@ public class SingleQuoteAction extends Action {
                     "usage: java -jar rcwm.jar quote [SYMBOL]";
             log.info(message);
         } else {
-            Stock stock = YahooFinance.get(symbol);
-            StockQuote quote = stock.getQuote();
+            QuoteService service = App.getInjector().getInstance(QuoteService.class);
+            service.setSymbol(symbol);
             log.info(symbol.toUpperCase() + ": " +
-                     quote.getPrice() + ", " +
-                     "bid: " + quote.getBid() + ", " +
-                     "ask: " + quote.getAsk());
+                     service.getPrice() + ", " +
+                     "bid: " + service.getBid() + ", " +
+                     "ask: " + service.getAsk());
         }
     }
 
