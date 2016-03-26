@@ -30,7 +30,7 @@ In order, these commands will
   3. Build worrell and place the build artifacts in subfolder called "target"
 
 ## Running
-Once you've build the project locate the worrell.jar file inside of the 
+Once you've built the project, locate the worrell.jar file inside of the 
 "target" directory created by Maven and treat it as an executable Jar.  For the
 sake of specificity, let's assume you've cloned and built worrell and that 
 you're still in the worrell folder from the command line.  Simply issue the 
