@@ -12,7 +12,8 @@ public class VersionAction extends Action {
 
     @Override
     public void run(String[] args) {
-        System.out.println("0.2.0-SNAPSHOT");
+        String version = getClass().getPackage().getImplementationVersion();
+        System.out.println(version);
     }
 
 }

@@ -79,6 +79,7 @@
         </resources>
         <plugins>
 
+            <!-- Used to package the jar as a single, "executable" file -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -91,6 +92,8 @@
                     <archive>
                         <manifest>
                             <mainClass>worrell.cli.App</mainClass>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
                         </manifest>
                         <manifestEntries>
                             <Class-Path>.</Class-Path>
