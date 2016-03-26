@@ -3,6 +3,7 @@ package worrell.cli;
 import com.google.common.base.Strings;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.quotes.stock.StockQuote;
 
 import java.io.IOException;
 
@@ -26,7 +27,11 @@ public class SingleQuoteAction extends Action {
             log.info(message);
         } else {
             Stock stock = YahooFinance.get(symbol);
-            stock.print();
+            StockQuote quote = stock.getQuote();
+            log.info(symbol.toUpperCase() + ": " +
+                     quote.getPrice() + ", " +
+                     "bid: " + quote.getBid() + ", " +
+                     "ask: " + quote.getAsk());
         }
     }
 
