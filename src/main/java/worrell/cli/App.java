@@ -7,6 +7,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import worrell.services.QuoteService;
+import worrell.services.ServicesModule;
 import worrell.services.YahooFinanceQuoteService;
 
 import java.util.HashMap;
@@ -16,18 +17,13 @@ import java.util.Set;
 /**
  * Entry point into the CLI
  */
-public class App extends AbstractModule {
+public class App {
     private final String DEFAULT_ACTION = "help";
     private String[] args;
     private Map<String, Action> actions;
     private static Injector injector;
 
     public static final String EXCEPT_MSG = "Runtime exception logged";
-
-    @Override
-    protected void configure() {
-        bind(QuoteService.class).to(YahooFinanceQuoteService.class);
-    }
 
     /**
      * Gets the DI container.
@@ -42,11 +38,12 @@ public class App extends AbstractModule {
      * @param args Command line arguments
      */
     public App(String[] args) throws IllegalAccessException, InstantiationException {
+        injector = Guice.createInjector(new ServicesModule());
         actions = new HashMap<String, Action>();
         Reflections reflections = new Reflections("worrell.cli");
         Set<Class<? extends Action>> types = reflections.getSubTypesOf(Action.class);
         for (Class<? extends Action> type : types) {
-            Action action = type.newInstance();
+            Action action = injector.getInstance(type);
             actions.put(action.getName(), action);
         }
         this.args = args;
@@ -96,7 +93,6 @@ public class App extends AbstractModule {
         Logger log = LoggerFactory.getLogger(App.class);
         try {
             App app = new App(args);
-            injector = Guice.createInjector(app);
             app.run();
         } catch (Exception e) {
             log.debug(e.getMessage(), e);

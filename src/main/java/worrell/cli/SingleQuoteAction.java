@@ -4,12 +4,20 @@ import com.google.common.base.Strings;
 import worrell.models.Quote;
 import worrell.services.QuoteService;
 
+import javax.inject.Inject;
 import java.io.IOException;
 
 /**
  * Displays a single quote given a ticker symbol.
  */
 public class SingleQuoteAction extends Action {
+
+    private QuoteService service;
+
+    @Inject
+    public SingleQuoteAction(QuoteService service) {
+        this.service = service;
+    }
 
     @Override
     public String getName() {
@@ -25,7 +33,6 @@ public class SingleQuoteAction extends Action {
                     "usage: java -jar rcwm.jar quote [SYMBOL]";
             log.info(message);
         } else {
-            QuoteService service = App.getInjector().getInstance(QuoteService.class);
             Quote quote = service.getQuote(symbol);
             log.info(quote.toString());
         }
