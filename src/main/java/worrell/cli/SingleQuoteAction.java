@@ -1,6 +1,7 @@
 package worrell.cli;
 
 import com.google.common.base.Strings;
+import worrell.models.Quote;
 import worrell.services.QuoteService;
 
 import java.io.IOException;
@@ -25,14 +26,9 @@ public class SingleQuoteAction extends Action {
             log.info(message);
         } else {
             QuoteService service = App.getInjector().getInstance(QuoteService.class);
-            service.setSymbol(symbol);
-            log.info(symbol.toUpperCase() + ": " +
-                     service.getPrice() + ", " +
-                     "bid: " + service.getBid() + ", " +
-                     "ask: " + service.getAsk());
+            Quote quote = service.getQuote(symbol);
+            log.info(quote.toString());
         }
     }
-
-
 
 }

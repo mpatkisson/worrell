@@ -1,10 +1,11 @@
 package worrell.services;
 
+import worrell.models.Quote;
 import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
+import yahoofinance.quotes.stock.StockQuote;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.logging.Level;
 
 /**
@@ -12,34 +13,32 @@ import java.util.logging.Level;
  */
 public class YahooFinanceQuoteService implements QuoteService {
 
-    private Stock stock = null;
-
     public YahooFinanceQuoteService() {
-        // This line turns logging off for the Yahoo Fiannce API.  There may be a better way to configure this.
-        YahooFinance.logger.setLevel(Level.OFF);
+        YahooFinance.logger.setLevel(Level.SEVERE);
     }
 
+    /**
+     * Gets a quote from Yahoo Finance.
+     * @param symbol The symbol used to reference the security.
+     * @return
+     */
     @Override
-    public void setSymbol(String symbol) {
+    public Quote getQuote(String symbol) {
+        Quote quote = new Quote();
         try {
-            stock = YahooFinance.get(symbol);
+            Stock stock = YahooFinance.get(symbol);
+            StockQuote yahooQuote = stock.getQuote();
+            quote.setSymbol(symbol);
+            quote.setAsk(yahooQuote.getAsk());
+            quote.setAskSize(yahooQuote.getAskSize());
+            quote.setBid(yahooQuote.getBid());
+            quote.setBidSize(yahooQuote.getBidSize());
+            quote.setPrice(yahooQuote.getPrice());
+            quote.setLastTrade(yahooQuote.getLastTradeTime().getTime());
         } catch (IOException e) {
             throw new ServiceRuntimeException("Unable to lookup symbol with Yahoo Finance", e);
         }
+        return quote;
     }
 
-    @Override
-    public BigDecimal getPrice() {
-        return stock.getQuote().getPrice();
-    }
-
-    @Override
-    public BigDecimal getBid() {
-        return stock.getQuote().getBid();
-    }
-
-    @Override
-    public BigDecimal getAsk() {
-        return stock.getQuote().getAsk();
-    }
 }
