@@ -1,15 +1,26 @@
 package worrell.cli;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.google.common.io.ByteStreams;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import worrell.config.Configuration;
 import worrell.services.QuoteService;
 import worrell.services.ServicesModule;
 import worrell.services.YahooFinanceQuoteService;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +33,7 @@ public class App {
     private String[] args;
     private Map<String, Action> actions;
     private static Injector injector;
+    private static Configuration configuration;
 
     public static final String EXCEPT_MSG = "Runtime exception logged";
 
@@ -34,11 +46,20 @@ public class App {
     }
 
     /**
+     * Gets the configuration for the current application.
+     * @return An object which contains app config values.
+     */
+    public static Configuration getConfiguration() {
+        return configuration;
+    }
+
+    /**
      * Creates a new instance.
      * @param args Command line arguments
      */
-    public App(String[] args) throws IllegalAccessException, InstantiationException {
-        injector = Guice.createInjector(new ServicesModule());
+    public App(String[] args) throws IllegalAccessException, InstantiationException, IOException, URISyntaxException {
+        configuration = deserializeConfiguration();
+        injector = Guice.createInjector(new ServicesModule(configuration));
         actions = new HashMap<String, Action>();
         Reflections reflections = new Reflections("worrell.cli");
         Set<Class<? extends Action>> types = reflections.getSubTypesOf(Action.class);
@@ -98,6 +119,21 @@ public class App {
             log.debug(e.getMessage(), e);
             log.info(EXCEPT_MSG);
         } 
+    }
+
+    private Configuration deserializeConfiguration() throws IOException, URISyntaxException {
+        Configuration config;
+        String home = System.getProperty("user.home");
+        String path = home + File.separator + ".worrellrc";
+        File file = new File(path);
+        if (file.createNewFile()) {
+            InputStream stream = getClass().getResourceAsStream("/.worrellrc");
+            byte[] bytes = ByteStreams.toByteArray(stream);
+            Files.write(file.toPath(), bytes);
+        }
+        ObjectMapper xmlMapper = new XmlMapper();
+        config = xmlMapper.readValue(file, Configuration.class);
+        return config;
     }
 
 }

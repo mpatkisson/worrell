@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<configuration>
+    <query-frequency>5000</query-frequency>
+    <services>
+        <service name="worrell.services.QuoteService" type="worrell.services.YahooFinanceQuoteService" />
+    </services>
+    <quotes>
+        <quote symbol="^GSCP" />
+        <quote symbol="^DJI" />
+        <quote symbol="^IXIC" />
+    </quotes>
+</configuration>
