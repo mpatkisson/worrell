@@ -27,7 +27,6 @@ public class SingleQuoteAction extends Action {
     @Override
     public void run(String[] args) throws IOException {
         String symbol = getFirstCommandArgument(args);
-
         if (Strings.isNullOrEmpty(symbol)) {
             String message = "You must supply the ticker symbol ID of security you wish to quote.\n\n" +
                     "usage: java -jar rcwm.jar quote [SYMBOL]";

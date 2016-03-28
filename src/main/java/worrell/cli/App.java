@@ -118,6 +118,7 @@ public class App {
         } catch (Exception e) {
             log.debug(e.getMessage(), e);
             log.info(EXCEPT_MSG);
+            log.info(e.getMessage());
         } 
     }
 
