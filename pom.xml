@@ -152,8 +152,8 @@
                                 <resource>
                                     <directory>${project.basedir}/src/main/resources</directory>
                                     <includes>
-                                        <include>worrell.bat</include>
-                                        <include>worrell.sh</include>
+                                        <include>wrl</include>
+                                        <include>wrl.cmd</include>
                                     </includes>
                                 </resource>
                             </resources>
