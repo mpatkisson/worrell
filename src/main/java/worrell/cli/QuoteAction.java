@@ -10,12 +10,12 @@ import java.io.IOException;
 /**
  * Displays a single quote given a ticker symbol.
  */
-public class SingleQuoteAction extends Action {
+public class QuoteAction extends Action {
 
     private QuoteService service;
 
     @Inject
-    public SingleQuoteAction(QuoteService service) {
+    public QuoteAction(QuoteService service) {
         this.service = service;
     }
 
@@ -32,9 +32,20 @@ public class SingleQuoteAction extends Action {
                     "usage: java -jar rcwm.jar quote [SYMBOL]";
             log.info(message);
         } else {
-            Security security = service.getQuote(symbol);
-            log.info(security.toString());
+            if (symbol.contains(",")) {
+                String[] symbols = symbol.split(",");
+                for (String sym : symbols) {
+                    logSecurityInfo(sym);
+                }
+            } else {
+                logSecurityInfo(symbol);
+            }
         }
+    }
+
+    private void logSecurityInfo(String symbol) {
+        Security security = service.getQuote(symbol);
+        log.info(security.toString());
     }
 
 }
