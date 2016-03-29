@@ -1,6 +1,6 @@
 package worrell.services;
 
-import worrell.models.Quote;
+import worrell.models.Security;
 
 /**
  * Provides market data such as price, bid and ask for a security.
@@ -12,6 +12,6 @@ public interface QuoteService {
      * @param symbol The symbol used to reference the security.
      * @return A market quote for the security.
      */
-    Quote getQuote(String symbol);
+    Security getQuote(String symbol);
 
 }

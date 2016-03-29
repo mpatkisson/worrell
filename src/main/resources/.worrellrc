@@ -5,8 +5,7 @@
         <service name="worrell.services.QuoteService" type="worrell.services.YahooFinanceQuoteService" />
     </services>
     <quotes>
-        <quote symbol="^GSCP" />
-        <quote symbol="^DJI" />
-        <quote symbol="^IXIC" />
+        <security symbol="^GSPC" />
+        <security symbol="^IXIC" />
     </quotes>
 </configuration>

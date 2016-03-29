@@ -1,7 +1,7 @@
 package worrell.config;
 
 /**
- * Represents configuration of a Quote.
+ * Represents configuration of a Security.
  */
 public class Quote {
 

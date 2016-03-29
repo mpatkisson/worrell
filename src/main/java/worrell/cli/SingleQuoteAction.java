@@ -1,7 +1,7 @@
 package worrell.cli;
 
 import com.google.common.base.Strings;
-import worrell.models.Quote;
+import worrell.models.Security;
 import worrell.services.QuoteService;
 
 import javax.inject.Inject;
@@ -32,8 +32,8 @@ public class SingleQuoteAction extends Action {
                     "usage: java -jar rcwm.jar quote [SYMBOL]";
             log.info(message);
         } else {
-            Quote quote = service.getQuote(symbol);
-            log.info(quote.toString());
+            Security security = service.getQuote(symbol);
+            log.info(security.toString());
         }
     }
 

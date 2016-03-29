@@ -29,7 +29,8 @@ import java.util.Set;
  * Entry point into the CLI
  */
 public class App {
-    private final String DEFAULT_ACTION = "help";
+    private final String DEFAULT_ACTION = "default";
+    private final String HELP_ACTION = "help";
     private String[] args;
     private Map<String, Action> actions;
     private static Injector injector;
@@ -60,7 +61,7 @@ public class App {
     public App(String[] args) throws IllegalAccessException, InstantiationException, IOException, URISyntaxException {
         configuration = deserializeConfiguration();
         injector = Guice.createInjector(new ServicesModule(configuration));
-        actions = new HashMap<String, Action>();
+        actions = new HashMap<>();
         Reflections reflections = new Reflections("worrell.cli");
         Set<Class<? extends Action>> types = reflections.getSubTypesOf(Action.class);
         for (Class<? extends Action> type : types) {
@@ -101,7 +102,7 @@ public class App {
     public Action getAction(String command) {
         Action action = actions.get(command);
         if (action == null) {
-            action = actions.get(DEFAULT_ACTION);
+            action = actions.get(HELP_ACTION);
         }
         return action;
     }

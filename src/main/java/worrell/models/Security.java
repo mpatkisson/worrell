@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * A market quote for a security.
  */
-public class Quote {
+public class Security {
 
     private int bidSize = 0;
     private int askSize = 0;
